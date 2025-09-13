@@ -1,0 +1,42 @@
+FROM node:18-bullseye
+
+
+# Install system deps for Perl/CPAN and building modules
+RUN apt-get update \
+&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+build-essential \
+git \
+curl \
+ca-certificates \
+libdbi-perl \
+libdbd-pg-perl \
+cpanminus \
+perl \
+&& rm -rf /var/lib/apt/lists/*
+
+
+# Install Ora2Pg via cpanm
+RUN cpanm --notest Ora2Pg || true
+
+
+# Create app dir
+WORKDIR /app
+
+
+# Copy backend and frontend
+COPY backend ./backend
+COPY frontend ./frontend
+COPY docker-compose.yml ./
+
+
+# Install backend deps
+WORKDIR /app/backend
+RUN npm install --production
+
+
+# Expose port
+EXPOSE 3000
+
+
+# Start the Node API
+CMD ["node", "index.js"]

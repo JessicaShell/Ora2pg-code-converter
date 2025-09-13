@@ -1,0 +1,12 @@
+{
+"name": "ora2pg-snippet-backend",
+"version": "0.1.0",
+"main": "index.js",
+"license": "MIT",
+"dependencies": {
+"express": "^4.18.2",
+"multer": "^1.4.5-lts.1",
+"body-parser": "^1.20.2",
+"uuid": "^9.0.0"
+}
+}
